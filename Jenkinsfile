@@ -4,9 +4,10 @@ pipeline{
 
     agent any
     //agent { label 'Demo' }
-    tools {
-        jfrog 'jfrog-cli'
-    }
+environment {
+    CI = true
+    ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+  }
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
@@ -111,19 +112,15 @@ pipeline{
                }
             }
         }
-        stage('Push artifacts into artifactory') {
-            steps {
-              rtUpload (
-                serverId: 'jfrog-server',
-                spec: '''{
-                      "files": [
-                        {
-                          "pattern": "*.jar",
-                           "target": "example-repo-local/build-files/"
-                        }
-                    ]
-                }'''
-              )
+        stage('Upload to Artifactory') {
+          agent {
+            docker {
+              image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.2.0' 
+              reuseNode true
+            }
+          }
+          steps {
+            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
           }
         }
     }
