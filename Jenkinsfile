@@ -4,10 +4,7 @@ pipeline{
 
     agent any
     //agent { label 'Demo' }
-    environment {
-        CI = true
-        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
-      }
+
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
@@ -112,16 +109,39 @@ pipeline{
                }
             }
         }
-        stage('Upload to Artifactory') {
-          agent {
-            docker {
-              image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.34.0' 
-              reuseNode true
+        stage ('Server'){
+            steps {
+               rtServer (
+                 id: "jfrog-server",
+                 url: 'http://192.168.29.133:8082/artifactory',
+                 username: 'admin',
+                  password: 'Password@123',
+                  bypassProxy: true,
+                   timeout: 300
+                        )
             }
-          }
-          steps {
-            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --user=admin --password=${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
-          }
+        }
+        stage('Upload'){
+            steps{
+                rtUpload (
+                 serverId:"jfrog-server" ,
+                  spec: '''{
+                   "files": [
+                      {
+                      "pattern": "*.jar",
+                      "target": "java-web-app"
+                      }
+                            ]
+                           }''',
+                        )
+            }
+        }
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jfrog-server"
+                )
+            }
         }
     }
 }
