@@ -115,12 +115,12 @@ pipeline{
         stage('Upload to Artifactory') {
           agent {
             docker {
-              image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.2.0' 
+              image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.34.0' 
               reuseNode true
             }
           }
           steps {
-            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --password ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
+            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --user=admin --password=${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
           }
         }
     }
