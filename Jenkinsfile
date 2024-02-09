@@ -114,6 +114,8 @@ pipeline{
                rtServer (
                  id: "jfrog-server",
                  url: 'http://192.168.29.133:8082/artifactory',
+                 username: 'admin',
+                  password: 'Password@123',
                   bypassProxy: true,
                    timeout: 300
                         )
