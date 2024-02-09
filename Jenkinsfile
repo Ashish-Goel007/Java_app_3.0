@@ -4,7 +4,9 @@ pipeline{
 
     agent any
     //agent { label 'Demo' }
-
+    tools {
+        jfrog 'jfrog-cli'
+    }
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
