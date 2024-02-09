@@ -4,10 +4,10 @@ pipeline{
 
     agent any
     //agent { label 'Demo' }
-environment {
-    CI = true
-    ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
-  }
+    environment {
+        CI = true
+        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+      }
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
