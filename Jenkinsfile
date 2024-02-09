@@ -108,6 +108,21 @@ pipeline{
                    dockerImageCleanup("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
                }
             }
-        }      
+        }
+        stage('Push artifacts into artifactory') {
+            steps {
+              rtUpload (
+                serverId: 'jfrog-server',
+                spec: '''{
+                      "files": [
+                        {
+                          "pattern": "*.jar",
+                           "target": "example-repo-local/build-files/"
+                        }
+                    ]
+                }'''
+              )
+          }
+        }
     }
 }
