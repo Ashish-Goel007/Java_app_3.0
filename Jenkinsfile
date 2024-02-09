@@ -120,7 +120,7 @@ pipeline{
             }
           }
           steps {
-            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
+            sh 'jfrog rt upload --url http://192.168.29.133:8082/artifactory/ --password ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar java-web-app/'
           }
         }
     }
