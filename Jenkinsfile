@@ -109,7 +109,7 @@ pipeline{
                }
             }
         }
-        stage ('Server'){
+        /*stage ('Server'){
             steps {
                rtServer (
                  id: "jfrog-server",
@@ -141,6 +141,14 @@ pipeline{
                 rtPublishBuildInfo (
                     serverId: "jfrog-server"
                 )
+            }
+        }*/
+        stage ('Pushing Jar to Jfrog : python'){
+          when { expression {  params.action == 'create' } }
+          steps{
+            script{
+                jfrogPush()
+                }
             }
         }
     }
