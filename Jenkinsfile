@@ -167,7 +167,7 @@ pipeline{
 					echo "CICD Check starting"
 					  if [ -f "$file" ]; then
 							echo "testReport file found sending to artifactory"
-							curl -H X-JFrog-Art-Api:'eyJ2ZXIiOiIyIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYiLCJraWQiOiJyUWIyeTgyR2ZUSUdiVXNLRXVHRkl3RVhYaG9xWDd4UWNDODNZUzgtM1c0In0.eyJzdWIiOiJqZmFjQDAxaG5xenpibXA4azRyMGZqdjNtcGEwcTVhL3VzZXJzL2FkbWluIiwic2NwIjoiYXBwbGllZC1wZXJtaXNzaW9ucy9hZG1pbiIsImF1ZCI6IipAKiIsImlzcyI6ImpmZmVAMDAwIiwiaWF0IjoxNzA4NTgxODI1LCJqdGkiOiI3YmVlZTFiOC0yYTYzLTQ4ZGMtODVmYS04Njg1YTkxZWIxN2MifQ.LKg2t5l8W3Omfx9mNJ3c5C-uCvDoVkZvDYcDBGvTYSIcahLbETwuqRtsKNNZNoTtpUK3Jbxx6uBrXoqnI_SVi4A0K5gOCcbt250u4jdkncvggu4QTGTzH1rGpvm7KK2zJdvit8dFsyA2glLc6DiQCk88QfsukdIW6tP0amoYay1AVCxYBjPz1UhejkzZNTiXmfbYtP-5gdpeh6AN8PuD8o07LT__n_LfxbGyFiMSFhTIZrvFynG6LJTg8fWJ7VeniNZhTs83WBY0bmaE8SnQ8gT_5p3LlQC1nvJlJV32bjVQ8iA4DXzo6O_7VzjanDbajLxJ_cFCrK9DP5lO1o-xGw' -T $file http://192.168.29.133:8082/artifactory/example-repo-local/$REPORTNAME.html
+							curl -X PUT -u admin:'Password@123' -T $file http://192.168.29.133:8082/artifactory/example-repo-local/$REPORTNAME.html
 					   else
 					   echo "testReport file not found"
 					  fi
